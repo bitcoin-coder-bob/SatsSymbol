@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Just say sats</title>
+<meta name="description" content="Showing bitcoin quantities in sats is the right call. It's clear, already spoken aloud, and works on every device today." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', Helvetica, sans-serif;
+  background: #fff;
+  color: #000;
+  overflow-x: hidden;
+  padding-top: 56px;
+}
+
+@media (min-width: 768px) { body { padding-top: 64px; } }
+
+a { color: inherit; }
+a:hover { color: #555; }
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 40;
+  height: 56px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #ececec;
+}
+@media (min-width: 768px) { nav { height: 64px; } }
+.nav-inner {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-weight: 700;
+  font-size: 17px;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-size: 14px;
+  text-decoration: underline;
+}
+@media (max-width: 600px) { .nav-links { display: none; } }
+
+/* WRAP */
+.wrap {
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* HERO */
+.hero {
+  padding: 48px 24px 0;
+  max-width: 768px;
+  margin: 0 auto;
+}
+.hero-big {
+  font-weight: 700;
+  font-size: 18vw;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .hero-big { font-size: 138px; }
+}
+.hero-tagline {
+  font-size: clamp(24px, 3.8vw, 37px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 32px 0 16px;
+}
+.hero-sub {
+  font-size: 15px;
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0 0 48px;
+}
+
+/* DIVIDER */
+hr {
+  border: none;
+  border-top: 1px solid #ececec;
+  width: 83.33%;
+  margin: 0 auto;
+}
+
+/* SECTIONS */
+.section {
+  padding: 48px 24px;
+  max-width: 768px;
+  margin: 0 auto;
+}
+@media (min-width: 768px) { .section { padding: 64px 24px; } }
+
+.section-heading {
+  font-size: clamp(24px, 3.8vw, 37px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin: 0 0 24px;
+}
+
+/* TWO-COL GRID */
+.two-col {
+  display: grid;
+  gap: 40px;
+  align-items: start;
+}
+@media (min-width: 768px) {
+  .two-col { grid-template-columns: minmax(0, 340px) 1fr; gap: 40px; }
+}
+
+/* CLAIM BOX (left column) */
+.claim-box {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #444;
+}
+.claim-box .label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 8px;
+}
+.claim-box blockquote {
+  margin: 0;
+  padding: 14px 18px;
+  border-left: 3px solid #000;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #333;
+  background: #fafafa;
+}
+
+/* BODY TEXT */
+.body {
+  font-size: 15px;
+  line-height: 1.75;
+}
+.body p { margin: 0 0 16px; }
+.body p:last-child { margin-bottom: 0; }
+
+/* INLINE HIGHLIGHT */
+mark {
+  background: #f6ff00;
+  color: inherit;
+  padding: 0 3px;
+}
+
+/* EXAMPLE ROW */
+.example-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+.example {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15px;
+}
+.example .bad {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 14px;
+  color: #999;
+  text-decoration: line-through;
+}
+.example .good {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  background: #f6ff00;
+  padding: 1px 5px;
+}
+.example .arrow { color: #ccc; }
+
+/* ANALOGY TABLE */
+.analogy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+  font-size: 15px;
+}
+.analogy-cell {
+  padding: 18px 20px;
+  border-bottom: 1px solid #ececec;
+  border-right: 1px solid #ececec;
+}
+.analogy-cell:nth-child(2n) { border-right: none; }
+.analogy-cell:nth-last-child(-n+2) { border-bottom: none; }
+.analogy-cell .symbol {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.analogy-cell .desc { font-size: 13px; color: #555; }
+
+/* SYMBOL DISPLAY */
+.symbol-demo {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.symbol-large {
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.symbol-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #999;
+  margin-top: 4px;
+  text-align: center;
+}
+.vs-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ccc;
+  letter-spacing: 0.08em;
+}
+.sketch-img {
+  max-width: 260px;
+  width: 100%;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  display: block;
+  margin: 16px 0;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid #ececec;
+  padding: 40px 24px;
+  max-width: 768px;
+  margin: 0 auto;
+}
+footer p {
+  font-size: 13px;
+  color: #777;
+  margin: 4px 0;
+  line-height: 1.6;
+}
+footer .footer-logo {
+  font-weight: 700;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">just say sats</a>
+    <div class="nav-links">
+      <a href="#decimals">Decimals</a>
+      <a href="#new-learning">New learning</a>
+      <a href="#clean">Clean &amp; simple</a>
+      <a href="#verbal">Verbal use</a>
+      <a href="#any-symbol">Any symbol</a>
+      <a href="#on-brand">On-brand</a>
+      <a href="#agent-skill">Agent skill</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <p class="hero-big">sats</p>
+  <p class="hero-tagline">Showing bitcoin quantities in sats is the right call.</p>
+  <p class="hero-sub">It is clear, already spoken aloud in everyday conversation, and works on every device on earth today. The ₿ symbol already means bitcoin. Using it to mean its smallest unit, off by a factor of 100&thinsp;million, is a mistake.</p>
+</div>
+
+<hr />
+
+<!-- SECTION 1: DECIMALS -->
+<div class="section" id="decimals">
+  <h2 class="section-heading">The fix for illegible decimals is four letters, not a symbol.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">They say</div>
+      <blockquote>"Historically, bitcoin wallets have shown bitcoin quantities as long decimal quantities, which are effectively illegible to the human eye."</blockquote>
+    </div>
+    <div class="body">
+      <p>Agreed. Writing <code>0.00004356</code> is a bad experience. The answer is already here: <mark>just say 4,356 sats.</mark></p>
+      <div class="example-row">
+        <div class="example">
+          <span class="bad">0.00052498</span>
+          <span class="arrow">→</span>
+          <span class="good">52,498 sats</span>
+        </div>
+        <div class="example">
+          <span class="bad">₿&thinsp;219,345</span>
+          <span class="arrow">→</span>
+          <span class="good">219,345 sats</span>
+        </div>
+      </div>
+      <p>Include the comma. Don't change how people read numbers. No new symbol, no Unicode update, no font support required.</p>
+      <p>The placement convention already exists too: for whole-unit amounts, the symbol goes before the number (₿1.5). For sub-unit amounts, the word or symbol follows the integer, exactly like cents. <mark>5,250 sats</mark> is already the right format.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 2: NEW LEARNING -->
+<div class="section" id="new-learning">
+  <h2 class="section-heading">Sats is not a burden to learn.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">They say</div>
+      <blockquote>"New users shouldn't need to learn a new concept to use bitcoin."</blockquote>
+    </div>
+    <div class="body">
+      <p>New users already have a sense that 1 bitcoin represents a large fiat amount. Telling them the smallest unit is called a <mark>sat</mark>, short for satoshi, is not a heavy lift.</p>
+      <p>Dollars have two names for denominations: dollars and cents. Nobody finds that confusing. Bitcoin having bitcoin and sats is exactly the same pattern, just with a different ratio.</p>
+      <p>What is a genuine burden is asking users to silently override their existing understanding that ₿ means bitcoin, and learn that in some contexts it now means a hundred-millionth of one.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 3: CLEAN AND SIMPLE -->
+<div class="section" id="clean">
+  <h2 class="section-heading">₿ already means something. You cannot reassign it.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">They say</div>
+      <blockquote>"Labeling quantities with ₿ is clean, simple and requires no new learning."</blockquote>
+    </div>
+    <div class="body">
+      <p>The ₿ symbol has entered the zeitgeist. When someone sees it, they think bitcoin, the whole unit. <mark>The ₿ symbol already has an established meaning.</mark></p>
+      <p>Repurposing it to mean the smallest unit is not clean. It introduces an ambiguity off by a factor of 100,000,000. There will only ever be 21 million bitcoin. If ₿ starts meaning sats, you have changed the meaning of a bitcoin by that same factor.</p>
+      <p>The analogy is precise: it would be like repurposing the $ symbol to mean cents, when we already have a ¢ symbol. The comparison is not a stretch. It is exactly that.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 4: VERBAL CONSISTENCY -->
+<div class="section" id="verbal">
+  <h2 class="section-heading">One written form should map to one spoken form.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">The problem</div>
+      <blockquote>Supporters of using ₿ for the smallest unit say: "when speaking verbally, call them whatever you want."</blockquote>
+    </div>
+    <div class="body">
+      <p>This creates genuine confusion. Reading "₿&thinsp;219,345" should produce one clear spoken form. Instead it allows all of these:</p>
+      <ul style="margin:12px 0;padding-left:20px;font-size:15px;line-height:2;">
+        <li>"219,345 bitcoin"</li>
+        <li>"219,345 sats"</li>
+        <li>"219,345 BTC"</li>
+      </ul>
+      <p>Those three phrases have wildly different meanings. <mark>"219,345 sats"</mark> is roughly the cost of a nice dinner. "219,345 bitcoin" is roughly the current entire float of a mid-size nation's treasury.</p>
+      <p>In dollar terms, the trading ticker USD is never used in everyday speech. Nobody says "I paid 12 USD for a burger." The ticker is for trading infrastructure, not daily conversation. The same applies to BTC. What we need is one word for the subunit that maps unambiguously to its written form. That word is sats.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 5: ANALOGY -->
+<div class="section" id="analogy">
+  <h2 class="section-heading">The relationship already exists. We just need to name it.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">The pattern</div>
+      <blockquote>In US currency: ¢ is to $ as sats is to ₿.</blockquote>
+    </div>
+    <div class="body">
+      <p>The dollar already has two names and two symbols for its denominations, and nobody finds this confusing after a lifetime of use.</p>
+      <div class="analogy">
+        <div class="analogy-cell">
+          <div class="symbol">$</div>
+          <div class="desc">symbol for dollars (whole units)</div>
+        </div>
+        <div class="analogy-cell">
+          <div class="symbol">¢</div>
+          <div class="desc">symbol for cents (subunit)</div>
+        </div>
+        <div class="analogy-cell">
+          <div class="symbol">₿</div>
+          <div class="desc">symbol for bitcoin (whole units)</div>
+        </div>
+        <div class="analogy-cell">
+          <div class="symbol" style="font-size:20px;letter-spacing:-0.01em;">sats</div>
+          <div class="desc">word (or future symbol) for the subunit</div>
+        </div>
+      </div>
+      <p>What symbol eventually represents the sat is open. What is not open is using ₿ for it. Whether the community lands on the word sats, an abbreviation, or some future glyph, <mark>it cannot be the same symbol that already means the whole unit.</mark></p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 6: ANY SYMBOL IS FINE, JUST NOT ₿ -->
+<div class="section" id="any-symbol">
+  <h2 class="section-heading">Any symbol works. The one symbol that cannot work is ₿.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">To be clear</div>
+      <blockquote>This is not an argument for the word "sats" specifically. It is an argument against using ₿ for the subunit.</blockquote>
+    </div>
+    <div class="body">
+      <p>The community can land on whatever it wants: the word sats, an abbreviation, the so-called kebab symbol, or something else entirely. <mark>All of those are fine.</mark> The constraint is narrow: don't use a symbol that already has a fixed, well-understood meaning.</p>
+      <p>₿ means bitcoin. One bitcoin is 100,000,000 sats. That is not a rounding difference or a matter of convention. Using the same symbol for both denominations would be like the US Mint printing "¢" on dollar bills because the cent symbol is already on-brand. The brands are related, but the units are not interchangeable.</p>
+
+      <p>To illustrate the general idea: a lowercase version of ₿, with the ticks at the bottom. Visually related, clearly subordinate, unambiguous. I am not an artist. A real proposal would look better than this.</p>
+
+      <img class="sketch-img" src="symbol-sketch.png" alt="Rough hand-drawn sketch: ₿ on the left vs a proposed lowercase sats symbol on the right" />
+      <p style="font-size:13px;color:#999;margin-top:6px;">A rough sketch, not a serious design proposal.</p>
+
+      <p>So: call them sats, use this symbol, invent something else, get the kebab symbol into Unicode. Any of those moves the conversation forward. <mark>Reassigning ₿ moves it backward.</mark></p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- SECTION 7: ON-BRAND -->
+<div class="section" id="on-brand">
+  <h2 class="section-heading">On-brand? Sats is already on-brand.</h2>
+  <div class="two-col">
+    <div class="claim-box">
+      <div class="label">Their strongest point</div>
+      <blockquote>"₿ IS ON-BRAND — adopting ₿ automatically inherits the bitcoin brand for prices, forevermore."</blockquote>
+    </div>
+    <div class="body">
+      <p>This is genuinely the strongest argument for their position. It is true that ₿ is on-brand. <mark>We should absolutely keep using ₿ for whole bitcoin amounts.</mark> Nobody is suggesting otherwise.</p>
+      <p>But "sats" is also already on-brand. It is already in use throughout the bitcoin community. It did not require a campaign. It spread organically because it is useful and unambiguous.</p>
+      <p>Getting people to say "sats" is a smaller undertaking than getting people to silently relearn that ₿ now means something a hundred million times smaller than they thought. One of these is the path of least resistance. It is sats.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- TEACH YOUR AGENT -->
+<div class="section" id="agent-skill">
+  <h2 class="section-heading">TEACH YOUR AGENT</h2>
+  <div class="two-col">
+    <div class="body">
+      <p>AI agents trained on recent data may have already picked up the ₿-for-sats convention from sites promoting it. If yours has, you can correct it.</p>
+      <p>Point your agent at the <a href="/skill.md" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">sats-units skill</a> to get it using the right convention: sats for subunit amounts, ₿ for whole bitcoin, and never the two confused.</p>
+    </div>
+    <div class="body" style="font-size:14px;background:#fafafa;border:1px solid #ececec;border-radius:8px;padding:18px 20px;">
+      <p style="margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#999;">How to use it</p>
+      <p>Paste this URL into your agent's system prompt or memory:</p>
+      <code style="display:block;margin-top:10px;font-size:13px;background:#fff;border:1px solid #ececec;border-radius:4px;padding:10px 12px;word-break:break-all;">https://justsaysats.org/skill.md</code>
+      <p style="margin-top:14px;margin-bottom:0;">Or copy the raw contents of <a href="/skill.md" target="_blank" rel="noopener noreferrer" style="text-decoration:underline;">skill.md</a> directly into your agent's instructions.</p>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<footer>
+  <span class="footer-logo">just say sats</span>
+  <p>A rebuttal to the case for using ₿ as the symbol for the satoshi subunit.</p>
+  <p>Say "sats". Write "sats". The ₿ symbol means bitcoin. Let it keep meaning bitcoin.</p>
+  <p style="margin-top:14px;"><a href="/skill.md" style="color:#999;text-decoration:underline;font-size:13px;">sats-units agent skill</a> &mdash; <span style="color:#bbb;font-size:13px;">teach your AI agent the correct convention</span></p>
+  <p style="margin-top:14px;">
+    <a href="https://x.com/BitcoinCoderBob" style="color:#999;text-decoration:underline;font-size:13px;">@BitcoinCoderBob</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/bitcoin-coder-bob" style="color:#999;text-decoration:underline;font-size:13px;">github.com/bitcoin-coder-bob</a>
+  </p>
+</footer>
+
+</body>
+</html>
